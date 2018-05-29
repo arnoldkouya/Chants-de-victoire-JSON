@@ -2,7 +2,8 @@
  * Main entry point of the application
  */
 var save = require('save-file');
-var DOMParser = require('xmldom').DOMParser;
+var DomParser = require('dom-parser');
+
 var data = "hello man";
 var https = require('https');
 var root_url = "https://cantiques.yapper.fr/CV/index.html";
@@ -22,7 +23,7 @@ urlToString(root_url);
  * into a Dom tree
  */
 function stringToDom(htmlString){
-	return new DOMParser()
+	return DomParser
 		.parseFromString(htmlString, 'text/html')
 		.body.childNodes;
 }
