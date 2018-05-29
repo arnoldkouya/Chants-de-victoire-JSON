@@ -7,18 +7,18 @@
 var save = require('save-file');
 var jsdom = require("jsdom");
 var https = require('https');
-var root_url = "https://cantiques.yapper.fr/CV/";
+var root_url = "https://cantiques.yapper.fr";
 var dataset = [];
 
 // Fetch HTML nodes in homepage
-fetchContent(root_url + "index.html")
+fetchContent(root_url + "/CV/index.html")
 	.then((html) => parseHomeContent(html))
 
 	// Process sublinks
 	.then(
 		links => {
 
-			links = links.slice(1, 2); // limit for test
+			console.log("on promises chain: " + links);
 			Promise.all(links.map(link =>
 					fetchContent(root_url + link)
 						.then(html=> parseDetailContent(link))
@@ -41,9 +41,11 @@ function parseHomeContent(html){
   let dom = new JSDOM(html);
   let $ = (require('jquery'))(dom.window);
 
-  var items = $('ul.hymnlist li a').attr('href');
+	var items = [];
+  items = $('ul.hymnlist li a').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-  return Promise.resolve(items);
+	items = items.slice(1,5);
+	return new Promise((resolve, reject) => resolve(items));
 }
 
 /**
@@ -82,12 +84,12 @@ function parseDetailContent(html){
   }
 
 	// Build Song object
-	var Song = {
+	var song = {
 		id : id,
 		title : title,
 		content : content,
 	}
-	return Promise.resolve(Song);
+	return new Promise((resolve, reject) => resolve(song));
 }
 
 /**
