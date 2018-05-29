@@ -6,12 +6,13 @@ var jsdom = require("jsdom");
 var https = require('https');
 var root_url = "https://cantiques.yapper.fr/CV/";
 
-/*
+
 // Fetch home HTML nodes
 fetchContent(root_url + "index.html")
 	.then((html) => parseHomeContent(html))
+	.then()
 	.catch((err) => console.log(err))
-*/
+
 // Fetch single HTML nodes
 fetchContent(root_url + "CV_002.html")
 	.then((html) => parseDetailContent(html))
@@ -22,7 +23,7 @@ fetchContent(root_url + "CV_002.html")
  * and return list of url to crawl
  *
  * @var html, url to fetch as String
- * @return a Javascript array
+ * @return a Promise containing Javascript array
  */
 function parseHomeContent(html){
 	let {JSDOM} = jsdom;
@@ -37,8 +38,8 @@ function parseHomeContent(html){
 }
 
 /**
- * Parse Signle content
- * a Javascript object
+ * Parse single page content
+ *
  * @var html, a raw Html text
  * @return JsonObject
  */
@@ -82,7 +83,6 @@ function parseDetailContent(html){
 
 /**
  * Fetching text from url
- * and returning it as a string
  *
  * @var html, url to fetch as String
  * @return Promise object
