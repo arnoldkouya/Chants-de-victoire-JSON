@@ -20,8 +20,10 @@ urlToString(root_url);
  * Convert an HTML string string
  * into a Dom tree
  */
-function stringToDom(string){
-
+function stringToDom(htmlString){
+	return new DOMParser()
+		.parseFromString(htmlString, 'text/html')
+		.body.childNodes;
 }
 /**
  * Fetching text from url
