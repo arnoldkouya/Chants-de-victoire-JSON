@@ -91,7 +91,7 @@ function parseDetailContent(html){
 	// Build Song object
 	var song = {
 		id : $('section#content h1 strong').text().replace(/\./, '').trim(),
-		title : $('section#content h1').text().replace(/[1-9]+?\./, '').trim(),
+		title : $('section#content h1').text().replace(/[1-9]\./, '').trim(),
 		content : content,
 	}
 	return new Promise((resolve, reject) => resolve(song));
