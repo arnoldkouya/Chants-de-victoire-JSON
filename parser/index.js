@@ -4,14 +4,17 @@
 var save = require('save-file');
 var jsdom = require("jsdom");
 var https = require('https');
-var root_url = "https://cantiques.yapper.fr/";
+var root_url = "https://cantiques.yapper.fr/CV/";
 
-// Fetch home HTMLL nodes
-fetchContent(root_url + "CV/index.html")
+// Fetch home HTML nodes
+fetchContent(root_url + "index.html")
 	.then((html) => parseHomeContent(html))
 	.catch((err) => console.log(err))
 
-
+// Fetch single HTML nodes
+fetchContent(root_url + "CV_002.html")
+	.then((html) => parseDetailContent(html))
+	.catch((err) => console.log(err))
 
 /**
  * Parse Homepage content
@@ -27,6 +30,25 @@ function parseHomeContent(html){
     var innerUrl = $(items[i]).children('a').attr('href');
     console.log(innerUrl);
   }
+}
+
+/**
+ * Parse Signle content
+ * a Javascript object
+ */
+
+function parseDetailContent(html){
+	let {JSDOM} = jsdom;
+  let dom = new JSDOM(html);
+  let $ = (require('jquery'))(dom.window);
+	var content = [];
+
+  var song = {
+		no : $('#content h2 strong'),
+		title : $('#content h2').text(),
+		content : content,
+	}
+	console.log(song);
 }
 
 // saveData(data, './data/data.json')
