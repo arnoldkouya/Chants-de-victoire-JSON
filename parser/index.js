@@ -24,7 +24,12 @@ fetchContent(root_url + "/CV/index.html")
 				)
 			)
 			// Save dataset to file
-			.then(data => saveData(JSON.stringify(dataset), "./data/data.json"));
+			.then(
+				data => {
+
+					saveData(JSON.stringify(dataset), "./data/data.json")
+				}
+			);
 		}
 	);
 
@@ -43,7 +48,7 @@ function parseHomeContent(html){
 	var items = [];
   items = $('ul.hymnlist li a').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-	items = items.slice(1,5);
+	items = items.slice(1,20);
 	return new Promise((resolve, reject) => resolve(items));
 }
 
@@ -129,6 +134,20 @@ function fetchContent(url){
  * @var data, arbitrary String
  * @var path, location of file
  * @return void
+ */
+function saveData(data, path){
+	save(data, path, (err, data) => {
+	    if (err) throw err;
+
+	})
+}
+
+/**
+ * Sort array by Id
+ *
+ * @var array, original array
+ * @var key, sorting criteria
+ * @return Javascript array
  */
 function saveData(data, path){
 	save(data, path, (err, data) => {
