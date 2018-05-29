@@ -20,6 +20,9 @@ fetchContent(root_url + "CV_002.html")
 /**
  * Parse Homepage content
  * and return list of url to crawl
+ *
+ * @var html, url to fetch as String
+ * @return a Javascript array
  */
 function parseHomeContent(html){
 	let {JSDOM} = jsdom;
@@ -80,6 +83,7 @@ function parseDetailContent(html){
 /**
  * Fetching text from url
  * and returning it as a string
+ *
  * @var html, url to fetch as String
  * @return Promise object
  *
@@ -110,6 +114,9 @@ function fetchContent(url){
 /**
  * Standalone function for
  * writting text to disk
+ *
+ * @var html, url to fetch as String
+ * @return Promise object
  */
 function saveData(data, path){
 	save(data, path, (err, data) => {
