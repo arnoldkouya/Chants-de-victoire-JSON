@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/samuelguebo/Chants-de-victoire-JSON#readme",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "jquery": "^3.3.1",
     "jsdom": "^11.11.0",
     "save-file": "^1.2.0"
