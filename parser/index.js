@@ -6,11 +6,12 @@ var jsdom = require("jsdom");
 var https = require('https');
 var root_url = "https://cantiques.yapper.fr/CV/";
 
+/*
 // Fetch home HTML nodes
 fetchContent(root_url + "index.html")
 	.then((html) => parseHomeContent(html))
 	.catch((err) => console.log(err))
-
+*/
 // Fetch single HTML nodes
 fetchContent(root_url + "CV_002.html")
 	.then((html) => parseDetailContent(html))
@@ -39,20 +40,19 @@ function parseHomeContent(html){
 
 function parseDetailContent(html){
 	let {JSDOM} = jsdom;
-  let dom = new JSDOM(html);
-  let $ = (require('jquery'))(dom.window);
+	let dom = new JSDOM(html);
+	let $ = (require('jquery'))(dom.window);
+
+	// Handling text formatting and filtering: regex, trim, etc.
 	var content = [];
 
-  var song = {
-		no : $('#content h2 strong'),
-		title : $('#content h2').text(),
+	var song = {
+		no : $('section#content h1 strong').text().replace(/\./, '').trim(),
+		title : $('section#content h1').text().replace(/[1-9]\./, '').trim(),
 		content : content,
 	}
 	console.log(song);
 }
-
-// saveData(data, './data/data.json')
-
 
 /**
  * Fetching text from url
@@ -70,15 +70,15 @@ function fetchContent(url){
 
 		  // Data is ready
 		  resp.on('end', () => {
-				resolve(data();
+				resolve(data);
 		  });
 
 			resp.on("error", (err) => {
-		  console.log("Error: " + err.message);
-			reject();
+			  console.log("Error: " + err.message);
+				reject();
+			});
 		});
-		});
-	}
+	});
 }
 
 /**
