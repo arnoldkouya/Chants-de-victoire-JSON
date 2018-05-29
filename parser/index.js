@@ -51,7 +51,7 @@ function parseHomeContent(html){
 	var items = [];
   items = $('ul.hymnlist li a').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-	items = items.slice(0,10);
+	items = items.slice(10,20);
 	return new Promise((resolve, reject) => resolve(items));
 }
 
@@ -91,7 +91,7 @@ function parseDetailContent(html){
 	// Build Song object
 	var song = {
 		id : $('section#content h1 strong').text().replace(/\./, '').trim(),
-		title : $('section#content h1').text().replace(/[1-9]{1-5}\./, '').trim(),
+		title : $('section#content h1').text().replace(/[1-9]+?\./, '').trim(),
 		content : content,
 	}
 	return new Promise((resolve, reject) => resolve(song));
