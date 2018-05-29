@@ -149,9 +149,9 @@ function saveData(data, path){
  * @var key, sorting criteria
  * @return Javascript array
  */
-function saveData(data, path){
-	save(data, path, (err, data) => {
-	    if (err) throw err;
+function sortArrayBy(arra, key){
+	return data.sort(function (a, b) {
+			return a.id.localeCompare(b.id);
+	});
 
-	})
 }
