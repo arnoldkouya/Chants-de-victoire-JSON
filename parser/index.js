@@ -1,47 +1,60 @@
 /**
- * Main entry point of the application
+ * Author: Samuel Guebo (@samuelguebo)
+ * Description: Main entry point of the application
+ * License: MIT
  */
+
 var save = require('save-file');
 var jsdom = require("jsdom");
 var https = require('https');
 var root_url = "https://cantiques.yapper.fr/CV/";
-
+var dataset = [];
 
 // Fetch home HTML nodes
 fetchContent(root_url + "index.html")
 	.then((html) => parseHomeContent(html))
-	.then()
-	.catch((err) => console.log(err))
+	.then((links)) {
+		Promise.all(links.map(link =>
+				fetchContent(root_url + link)
+					.then(html=> parseDetailContent(link)
+					.then(song => dataset.push(song))
+		)).then({
+			console.log(dataset);
+		   // Save dataset to file
+		})
 
-// Fetch single HTML nodes
-fetchContent(root_url + "CV_002.html")
-	.then((html) => parseDetailContent(html))
-	.catch((err) => console.log(err))
+		/*
+		// Fetch single HTML nodes
+		fetchContent(root_url + "CV_002.html")
+		.then((html) => parseDetailContent(html))
+		.catch((err) => console.log(err))
+
+		*/
+	}
+
+
 
 /**
  * Parse Homepage content
  * and return list of url to crawl
  *
  * @var html, url to fetch as String
- * @return a Promise containing Javascript array
+ * @return a Promise containing Javascript array (links)
  */
 function parseHomeContent(html){
 	let {JSDOM} = jsdom;
   let dom = new JSDOM(html);
   let $ = (require('jquery'))(dom.window);
 
-  var items = $('ul.hymnlist li');
-  for(var i = 0; i < items.length; i++){
-    var innerUrl = $(items[i]).children('a').attr('href');
-    console.log(innerUrl);
-  }
+  var items = $('ul.hymnlist li a').attr('href');
+  return Promise.resolve(items);
 }
 
 /**
  * Parse single page content
  *
  * @var html, a raw Html text
- * @return JsonObject
+ * @return a Promise containing a JsonObject
  */
 
 function parseDetailContent(html){
@@ -78,14 +91,14 @@ function parseDetailContent(html){
 		title : title,
 		content : content,
 	}
-	return Song;
+	return Promise.resolve(Song);
 }
 
 /**
  * Fetching text from url
  *
  * @var html, url to fetch as String
- * @return Promise object
+ * @return a Promise containing HTML text
  *
  */
 function fetchContent(url){
