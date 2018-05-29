@@ -36,6 +36,7 @@ function parseHomeContent(html){
 /**
  * Parse Signle content
  * a Javascript object
+ * @var html, a raw Html text
  * @return JsonObject
  */
 
@@ -67,18 +68,21 @@ function parseDetailContent(html){
 		content.push((i+1) + ". " +  verse);
   }
 
-
-	var song = {
+	// Build Song object
+	var Song = {
 		id : id,
 		title : title,
 		content : content,
 	}
-	return song;
+	return Song;
 }
 
 /**
  * Fetching text from url
  * and returning it as a string
+ * @var html, url to fetch as String
+ * @return Promise object
+ *
  */
 function fetchContent(url){
 	return new Promise((resolve, reject) => {
