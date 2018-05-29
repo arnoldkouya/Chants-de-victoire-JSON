@@ -11,24 +11,25 @@ var root_url = "https://cantiques.yapper.fr/CV/index.html";
 
 
 
-//
+fetchContentFromUrl(root_url);
+
 // Save text to disk file
 // saveData(data, './data/data.json')
 
 function fetchContentFromUrl(url){
-	https.get('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', (resp) => {
-	  let data = '';
+	https.get(url, (resp) => {
+	  var data = '';
 
-	  // A chunk of data has been recieved.
+		// Build dataset one data after another
 	  resp.on('data', (chunk) => {
 	    data += chunk;
 	  });
 
-	  // The whole response has been received. Print out the result.
+	  // If data was returned, print the result
 	  resp.on('end', () => {
-	    console.log(JSON.parse(data).explanation);
+	    console.log(data);
 	  });
-
+		// An error occured
 	}).on("error", (err) => {
 	  console.log("Error: " + err.message);
 	});
