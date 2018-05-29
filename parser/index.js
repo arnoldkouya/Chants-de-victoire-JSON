@@ -51,6 +51,8 @@ function parseDetailContent(html){
 	verses = $('section#content .lyrics .verse');
 	for(var i = 0; i < verses.length; i++){
     var verse;
+
+		// Get verse lines
 		var lines = verses[i]).children('.indent0');
 
 		// append lines
