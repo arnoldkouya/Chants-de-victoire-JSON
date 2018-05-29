@@ -4,7 +4,7 @@
   "description": "Chant de Victoire JSON est un répertoire des chants de victoire pour l'intégrer facilement dans vos différents app mobile.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/samuelguebo/Chants-de-victoire-JSON#readme",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
     "jquery": "^3.3.1",
     "jsdom": "^11.11.0",
     "save-file": "^1.2.0"
