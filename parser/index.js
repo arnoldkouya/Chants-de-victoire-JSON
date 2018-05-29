@@ -15,17 +15,18 @@ fetchContent(root_url + "index.html")
 	.then((html) => parseHomeContent(html))
 
 	// Process sublinks
-	.then((links)) {
-		links = links.slice(1, 3); // limit for test
-		Promise.all(links.map(link =>
-				fetchContent(root_url + link)
-					.then(html=> parseDetailContent(link)
-					.then(song => dataset.push(song))
-		)).then({
-			console.log(dataset);
-		   // Save dataset to file
-		})
-}
+	.then(
+		links => {
+			links = links.slice(1, 3); // limit for test
+			Promise.all(links.map(link =>
+					fetchContent(root_url + link)
+						.then(html=> parseDetailContent(link))
+						.then(song => dataset.push(song))
+			)).then(dataset => console.log(dataset));
+			   // Save dataset to file
+			}
+	)
+
 
 /**
  * Parse Homepage content
@@ -40,6 +41,7 @@ function parseHomeContent(html){
   let $ = (require('jquery'))(dom.window);
 
   var items = $('ul.hymnlist li a').attr('href');
+	items = Array.from(items); // converting into Javascript array
   return Promise.resolve(items);
 }
 
