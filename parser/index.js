@@ -50,7 +50,7 @@ function parseHomeContent(html){
 	var items = [];
   items = $('ul.hymnlist li a').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-	items = items.slice(1,10);
+	items = items.slice(0,21);
 	return new Promise((resolve, reject) => resolve(items));
 }
 
