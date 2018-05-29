@@ -18,16 +18,15 @@ fetchContent(root_url + "/CV/index.html")
 	.then(
 		links => {
 			Promise.all(links.map(link =>
-					fetchContent(root_url + link)
-						.then(html=> parseDetailContent(html))
-						.then(song => dataset.push(song))
-			))
+				fetchContent(root_url + link)
+					.then(html=> parseDetailContent(html))
+					.then(song => dataset.push(song))
+				)
+			)
 			// Save dataset to file
 			.then(data => saveData(JSON.stringify(dataset), "./data/data.json"));
-
-			}
-	)
-
+		}
+	);
 
 /**
  * Parse Homepage content
