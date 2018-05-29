@@ -22,7 +22,7 @@ fetchContent(root_url + "index.html")
 					fetchContent(root_url + link)
 						.then(html=> parseDetailContent(link))
 						.then(song => dataset.push(song))
-			)).then(dataset => console.log(dataset));
+			)).then(dataset => console.log(JSON.stringify(dataset)));
 			   // Save dataset to file
 			}
 	)
