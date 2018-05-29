@@ -11,11 +11,18 @@ var root_url = "https://cantiques.yapper.fr/CV/index.html";
 
 
 
-fetchContentFromUrl(root_url);
 
-// Save text to disk file
+urlToString(root_url);
+
 // saveData(data, './data/data.json')
 
+/**
+ * Convert an HTML string string
+ * into a Dom tree
+ */
+function stringToDom(string){
+
+}
 /**
  * Fetching text from url
  * and returning it as a string
