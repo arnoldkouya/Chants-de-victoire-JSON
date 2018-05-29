@@ -2,15 +2,16 @@
  * Main entry point of the application
  */
 var save = require('save-file');
+var DOMParser = require('xmldom').DOMParser;
 var data = "hello man";
 var https = require('https');
 var root_url = "https://cantiques.yapper.fr/CV/index.html";
 
 
-
-
-
-
+var songs = stringToDom(urlToString(root_url)).getElementsByClassName('hymnlist');
+songs.forEach(function(song){
+	console.log(song);
+});
 
 urlToString(root_url);
 
