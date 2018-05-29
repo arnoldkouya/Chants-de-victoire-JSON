@@ -4,7 +4,13 @@
 var save = require('save-file');
 var jsdom = require("jsdom");
 var https = require('https');
-var root_url = "https://cantiques.yapper.fr/CV/index.html";
+var root_url = "https://cantiques.yapper.fr/";
+
+// Fetch home nodes
+var homeData = urlToString(root_url + "CV/index.html");
+console.log(homeData);
+//parseHomeUrl (homeData);
+
 
 /**
  * Parse Homepage content
@@ -14,13 +20,10 @@ function parseHomeUrl(html){
 	let {JSDOM} = jsdom;
   let dom = new JSDOM(html);
   let $ = (require('jquery'))(dom.window);
-	/*
-	var parsedData = $.parseHTML(data);
-	var songs = $(data).filter("li"); */
-	//let's start extracting the data
-  var items = $("ul.hymnlist li");
+
+  var items = $('ul.hymnlist li');
   for(var i = 0; i < items.length; i++){
-    var innerUrl = $(items[i]).children('a').attr("href");
+    var innerUrl = $(items[i]).children('a').attr('href');
     console.log(innerUrl);
   }
 }
