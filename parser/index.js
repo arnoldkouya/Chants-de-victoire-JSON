@@ -6,9 +6,10 @@ var jsdom = require("jsdom");
 var https = require('https');
 var root_url = "https://cantiques.yapper.fr/";
 
-// Fetch home nodes
-urlToString(root_url + "CV/index.html");
-console.log(homeData);
+// Fetch home HTMLL nodes
+fetchContent(root_url + "CV/index.html")
+	.then((html) => parseHomeContent(html))
+	.catch((err) => console.log(err))
 
 
 
@@ -16,7 +17,7 @@ console.log(homeData);
  * Parse Homepage content
  * and return list of url to crawl
  */
-function parseHomeUrl(html){
+function parseHomeContent(html){
 	let {JSDOM} = jsdom;
   let dom = new JSDOM(html);
   let $ = (require('jquery'))(dom.window);
@@ -35,20 +36,19 @@ function parseHomeUrl(html){
  * Fetching text from url
  * and returning it as a string
  */
-function urlToString(url){
+function fetchContent(url){
 	return new Promise((resolve, reject) => {
 		https.get(url, (resp) => {
 		  var data = '';
 
-		  // A chunk of data has been recieved.
+		  // Data is received bit after bit
 		  resp.on('data', (chunk) => {
 		    data += chunk;
 		  });
 
-		  // The whole response has been received. Print out the result.
+		  // Data is ready
 		  resp.on('end', () => {
 				resolve(data();
-
 		  });
 
 			resp.on("error", (err) => {
