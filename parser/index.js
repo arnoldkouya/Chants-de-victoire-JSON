@@ -23,16 +23,7 @@ fetchContent(root_url + "index.html")
 		   // Save dataset to file
 		})
 
-		/*
-		// Fetch single HTML nodes
-		fetchContent(root_url + "CV_002.html")
-		.then((html) => parseDetailContent(html))
-		.catch((err) => console.log(err))
-
-		*/
-	}
-
-
+}
 
 /**
  * Parse Homepage content
@@ -125,8 +116,8 @@ function fetchContent(url){
 }
 
 /**
- * Standalone function for
- * writting text to disk
+ * Write text to disk
+ * at a specifc location
  *
  * @var data, arbitrary String
  * @var path, location of file
