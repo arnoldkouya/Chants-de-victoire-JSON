@@ -20,7 +20,7 @@ fetchContent(root_url + "/CV/index.html")
 			Promise.all(links.map(link =>
 				fetchContent(root_url + link)
 					.then(html=> parseDetailContent(html))
-					.then(song => dataset.push(song))
+					.then(song => if (song.content) dataset.push(song))
 				)
 			)
 			// Save dataset to file
