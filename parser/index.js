@@ -28,7 +28,7 @@ fetchContent(root_url + "/CV/index.html")
 				data => {
 
 					// Sort array by id
-					sortArrayBy(dataset, 'id')
+					dataset = sortArrayBy(dataset, 'id')
 					saveData(JSON.stringify(dataset), "./data/data.json")
 				}
 			);
@@ -71,8 +71,6 @@ function parseDetailContent(html){
 	var content = [];
 
 	// Assign variables
-	id 	= $('section#content h1 strong').text().replace(/\./, '').trim();
-	title = $('section#content h1').text().replace(/[1-9]\./, '').trim();
 	verses = $('section#content .lyrics .verse');
 	for(var i = 0; i < verses.length; i++){
 
@@ -91,8 +89,8 @@ function parseDetailContent(html){
 
 	// Build Song object
 	var song = {
-		id : id,
-		title : title,
+		id : $('section#content h1 strong').text().replace(/\./, '').trim(),
+		title : $('section#content h1').text().replace(/([1-9]{0-5}?)\./, '').trim(),
 		content : content,
 	}
 	return new Promise((resolve, reject) => resolve(song));
