@@ -7,9 +7,9 @@ var https = require('https');
 var root_url = "https://cantiques.yapper.fr/";
 
 // Fetch home nodes
-var homeData = urlToString(root_url + "CV/index.html");
+urlToString(root_url + "CV/index.html");
 console.log(homeData);
-//parseHomeUrl (homeData);
+
 
 
 /**
@@ -36,25 +36,27 @@ function parseHomeUrl(html){
  * and returning it as a string
  */
 function urlToString(url){
-	https.get(url, (resp) => {
-	  let data = '';
+	return new Promise((resolve, reject) => {
+		https.get(url, (resp) => {
+		  var data = '';
 
-	  // A chunk of data has been recieved.
-	  resp.on('data', (chunk) => {
-	    data += chunk;
-	  });
+		  // A chunk of data has been recieved.
+		  resp.on('data', (chunk) => {
+		    data += chunk;
+		  });
 
-	  // The whole response has been received. Print out the result.
-	  resp.on('end', () => {
+		  // The whole response has been received. Print out the result.
+		  resp.on('end', () => {
+				resolve(data();
 
-			return data;
+		  });
 
-	  });
-
-		resp.on("error", (err) => {
-	  console.log("Error: " + err.message);
-	});
-	});
+			resp.on("error", (err) => {
+		  console.log("Error: " + err.message);
+			reject();
+		});
+		});
+	}
 }
 
 /**
