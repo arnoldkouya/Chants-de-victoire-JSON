@@ -17,14 +17,14 @@ fetchContent(root_url + "/CV/index.html")
 	// Process sublinks
 	.then(
 		links => {
-
-			console.log("on promises chain: " + links);
 			Promise.all(links.map(link =>
 					fetchContent(root_url + link)
-						.then(html=> parseDetailContent(link))
+						.then(html=> parseDetailContent(html))
 						.then(song => dataset.push(song))
-			)).then(data => console.log(JSON.stringify(dataset)));
-			   // Save dataset to file
+			))
+			// Save dataset to file
+			.then(data => saveData(JSON.stringify(dataset), "./data/data.json"));
+
 			}
 	)
 
@@ -100,7 +100,7 @@ function parseDetailContent(html){
  *
  */
 function fetchContent(url){
-	console.log("Entered fetchContent() with url: " + url);
+
 	return new Promise((resolve, reject) => {
 		https.get(url, (resp) => {
 		  var data = '';
