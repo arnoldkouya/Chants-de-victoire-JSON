@@ -98,7 +98,7 @@ function parseDetailContent(html){
  *
  */
 function fetchContent(url){
-	//console.log("Entered fetchContent() with url: " + url);
+	console.log("Entered fetchContent() with url: " + url);
 	return new Promise((resolve, reject) => {
 		https.get(url, (resp) => {
 		  var data = '';
