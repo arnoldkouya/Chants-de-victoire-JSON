@@ -10,10 +10,13 @@ var https = require('https');
 var root_url = "https://cantiques.yapper.fr/CV/";
 var dataset = [];
 
-// Fetch home HTML nodes
+// Fetch HTML nodes in homepage
 fetchContent(root_url + "index.html")
 	.then((html) => parseHomeContent(html))
+
+	// Process sublinks
 	.then((links)) {
+		links = links.slice(1, 3); // limit for test
 		Promise.all(links.map(link =>
 				fetchContent(root_url + link)
 					.then(html=> parseDetailContent(link)
@@ -22,7 +25,6 @@ fetchContent(root_url + "index.html")
 			console.log(dataset);
 		   // Save dataset to file
 		})
-
 }
 
 /**
