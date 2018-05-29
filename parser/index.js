@@ -16,7 +16,11 @@ fetchContentFromUrl(root_url);
 // Save text to disk file
 // saveData(data, './data/data.json')
 
-function fetchContentFromUrl(url){
+/**
+ * Fetching text from url
+ * and returning it as a string
+ */
+function urlToString(url){
 	https.get(url, (resp) => {
 	  var data = '';
 
@@ -27,11 +31,11 @@ function fetchContentFromUrl(url){
 
 	  // If data was returned, print the result
 	  resp.on('end', () => {
-	    console.log(data);
+	    return data;
 	  });
 		// An error occured
 	}).on("error", (err) => {
-	  console.log("Error: " + err.message);
+	  return false;
 	});
 
 }
