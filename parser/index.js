@@ -115,8 +115,9 @@ function fetchContent(url){
  * Standalone function for
  * writting text to disk
  *
- * @var html, url to fetch as String
- * @return Promise object
+ * @var data, arbitrary String
+ * @var path, location of file
+ * @return void
  */
 function saveData(data, path){
 	save(data, path, (err, data) => {
