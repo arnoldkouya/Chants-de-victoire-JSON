@@ -44,11 +44,28 @@ function parseDetailContent(html){
 	let $ = (require('jquery'))(dom.window);
 
 	// Handling text formatting and filtering: regex, trim, etc.
-	var content = [];
+	var id, title, content, verses;
+	id = $('section#content h1 strong').text().replace(/\./, '').trim();
+	title : $('section#content h1').text().replace(/[1-9]\./, '').trim();
+
+	verses = $('section#content .lyrics .verse');
+	for(var i = 0; i < verses.length; i++){
+    var verse;
+		var lines = verses[i]).children('.indent0');
+
+		// append lines
+		for(j= 0; j < lines.length; j++){
+			verse = verse + $(lines[j]).text() + "<br>";
+		}
+
+  }
+
+
+
 
 	var song = {
-		no : $('section#content h1 strong').text().replace(/\./, '').trim(),
-		title : $('section#content h1').text().replace(/[1-9]\./, '').trim(),
+		id : id,
+		title : title,
 		content : content,
 	}
 	console.log(song);
