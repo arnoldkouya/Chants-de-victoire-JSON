@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Chant de Victoire JSON est un répertoire des chants de victoire pour l'intégrer facilement dans vos différents app mobile.",
   "main": "index.js",
+  "start": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
