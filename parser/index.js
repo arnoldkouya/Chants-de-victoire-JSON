@@ -27,6 +27,8 @@ fetchContent(root_url + "/CV/index.html")
 			.then(
 				data => {
 
+					// Sort array by id
+					sortArrayBy(dataset, 'id')
 					saveData(JSON.stringify(dataset), "./data/data.json")
 				}
 			);
@@ -48,7 +50,7 @@ function parseHomeContent(html){
 	var items = [];
   items = $('ul.hymnlist li a').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-	items = items.slice(1,20);
+	items = items.slice(1,10);
 	return new Promise((resolve, reject) => resolve(items));
 }
 
@@ -145,13 +147,13 @@ function saveData(data, path){
 /**
  * Sort array by Id
  *
- * @var array, original array
+ * @var dataArray, original array
  * @var key, sorting criteria
  * @return Javascript array
  */
-function sortArrayBy(arra, key){
-	return data.sort(function (a, b) {
-			return a.id.localeCompare(b.id);
+function sortArrayBy(dataArray, key){
+	return dataArray.sort(function (a, b) {
+			return a[key].localeCompare(b[key]);
 	});
 
 }
