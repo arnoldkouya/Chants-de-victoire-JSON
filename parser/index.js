@@ -17,12 +17,13 @@ fetchContent(root_url + "index.html")
 	// Process sublinks
 	.then(
 		links => {
-			links = links.slice(1, 3); // limit for test
+
+			links = links.slice(1, 2); // limit for test
 			Promise.all(links.map(link =>
 					fetchContent(root_url + link)
 						.then(html=> parseDetailContent(link))
 						.then(song => dataset.push(song))
-			)).then(dataset => console.log(JSON.stringify(dataset)));
+			)).then(data => console.log(JSON.stringify(dataset)));
 			   // Save dataset to file
 			}
 	)
@@ -41,7 +42,7 @@ function parseHomeContent(html){
   let $ = (require('jquery'))(dom.window);
 
   var items = $('ul.hymnlist li a').attr('href');
-	items = Array.from(items); // converting into Javascript array
+	items = $.makeArray(items); // converting into Javascript array
   return Promise.resolve(items);
 }
 
@@ -97,6 +98,7 @@ function parseDetailContent(html){
  *
  */
 function fetchContent(url){
+	//console.log("Entered fetchContent() with url: " + url);
 	return new Promise((resolve, reject) => {
 		https.get(url, (resp) => {
 		  var data = '';
