@@ -1,0 +1,31 @@
+{
+  "name": "chants-de-victoire-json",
+  "version": "1.0.0",
+  "description": "Chant de Victoire JSON est un répertoire des chants de victoire pour l'intégrer facilement dans vos différents app mobile.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuelguebo/Chants-de-victoire-JSON.git"
+  },
+  "keywords": [
+    "html",
+    "parse",
+    "json"
+  ],
+  "author": "Samuel Guebo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samuelguebo/Chants-de-victoire-JSON/issues"
+  },
+  "homepage": "https://github.com/samuelguebo/Chants-de-victoire-JSON#readme",
+  "dependencies": {
+    "delay": "^3.0.0",
+    "jquery": "^3.3.1",
+    "jsdom": "^11.11.0",
+    "save-file": "^1.2.0"
+  }
+}
