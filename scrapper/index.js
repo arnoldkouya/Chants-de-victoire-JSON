@@ -14,11 +14,12 @@ var dataset = [];
 // Fetch HTML nodes in homepage
 fetchContent(root_url + "/CV/index.html")
 	.then((html) => parseHomeContent(html))
+
 	// Process sublinks
 	.then(
 		links => {
 
-			// Grab a specific selection with array.slice(offset)
+			// Build list of Promise to run sequentially
 			var promises = links.reduce((promiseChain, link) => {
 				return promiseChain
 				.then(() => fetchContent(root_url + link))
@@ -28,12 +29,13 @@ fetchContent(root_url + "/CV/index.html")
 					asyncResolve(resolve, 1000);
 				}));
 
+
 			}, Promise.resolve());
 
 			// Save dataset to file
 			promises.then(
 				data => {
-					// Sort array by id
+					// Sort array by ke
 					 sortArrayBy(dataset, 'id')
 					//console.log(dataset)
 					saveData(JSON.stringify(dataset), "./data/data.json")
@@ -58,7 +60,7 @@ function parseHomeContent(html){
 	var items = [];
   items = $('ul.hymnlist li a:first-child').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-	items = items.slice(0,5); // reduce items for test
+	// items = items.slice(0,5); // reduce items for test
 	return new Promise((resolve, reject) => resolve(items));
 }
 
