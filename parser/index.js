@@ -20,7 +20,7 @@ fetchContent(root_url + "/CV/index.html")
 			Promise.all(links.map(link =>
 				fetchContent(root_url + link)
 					.then(html=> parseDetailContent(html))
-					.then(song => if (song.content) dataset.push(song))
+					.then(song => { if (song.content.length > 0) dataset.push(song)})
 				)
 			)
 			// Save dataset to file
@@ -51,7 +51,7 @@ function parseHomeContent(html){
 	var items = [];
   items = $('ul.hymnlist li a').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-	items = items.slice(0,50);
+	//items = items.slice(0,50);
 	return new Promise((resolve, reject) => resolve(items));
 }
 
