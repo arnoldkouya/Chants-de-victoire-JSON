@@ -43,18 +43,6 @@ fetchContent(root_url + "/CV/index.html")
 		}
 	);
 
-	/**
-	 * Resolve promise after a delay
-	 * Makes it possible to deal with
-	 * Promise array sequentially and with a delay
-	 * @link https://github.com/samuelguebo/wikibot-nodejs/blob/master/edit-image.js#L43-L73
-	 */
-	function asyncResolve (resolve, delay) {
-			setTimeout(() => {
-			resolve();
-			}, delay);
-	}
-
 /**
  * Parse Homepage content
  * and return list of url to crawl
@@ -175,4 +163,20 @@ function sortArrayBy(dataArray, key){
 			return parseInt(a[key]) - parseInt(b[key]);
 	});
 
+}
+
+/**
+ * Resolve promise after a delay
+ * Makes it possible to deal with
+ * Promise array sequentially and with a delay
+ *
+ * @var resolve, Object containing the resolve method of the Promise
+ * @var delay, int specifying milliseconds
+ * @return void, resolve the promise
+ * @link https://github.com/samuelguebo/wikibot-nodejs/blob/master/edit-image.js#L43-L73
+ */
+function asyncResolve (resolve, delay) {
+		setTimeout(() => {
+		resolve();
+		}, delay);
 }
