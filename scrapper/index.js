@@ -17,24 +17,43 @@ fetchContent(root_url + "/CV/index.html")
 	// Process sublinks
 	.then(
 		links => {
-			Promise.all(links.map(link =>
-				fetchContent(root_url + link)
-					.then(html=> parseDetailContent(html))
-					.then(song => { if (song.content.length > 0) dataset.push(song)})
-				)
-			)
-			// Save dataset to file
-			.then(
-				data => {
 
+			// Grab a specific selection with array.slice(offset)
+			var promises = links.reduce((promiseChain, link) => {
+				return promiseChain
+				.then(() => fetchContent(root_url + link))
+				.then(html=> parseDetailContent(html))
+				.then(song => { if (song.content.length > 0) dataset.push(song)})
+				.then(() => new Promise((resolve) => {
+					asyncResolve(resolve, 1000);
+				}));
+
+			}, Promise.resolve());
+
+			// Save dataset to file
+			promises.then(
+				data => {
 					// Sort array by id
 					 sortArrayBy(dataset, 'id')
 					//console.log(dataset)
 					saveData(JSON.stringify(dataset), "./data/data.json")
 				}
-			);
+			).then(() => console.log('treated ' + dataset.length + ' items'))
+
 		}
 	);
+
+	/**
+	 * Resolve promise after a delay
+	 * Makes it possible to deal with
+	 * Promise array sequentially and with a delay
+	 * @link https://github.com/samuelguebo/wikibot-nodejs/blob/master/edit-image.js#L43-L73
+	 */
+	function asyncResolve (resolve, delay) {
+			setTimeout(() => {
+			resolve();
+			}, delay);
+	}
 
 /**
  * Parse Homepage content
@@ -51,7 +70,7 @@ function parseHomeContent(html){
 	var items = [];
   items = $('ul.hymnlist li a:first-child').each((i) => items.push($(items[i]).attr("href")));
 	items = $.makeArray(items); // converting into Javascript array
-	items = items.slice(0,5);
+	items = items.slice(0,5); // reduce items for test
 	return new Promise((resolve, reject) => resolve(items));
 }
 
