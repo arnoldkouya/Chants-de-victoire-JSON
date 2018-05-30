@@ -8,42 +8,57 @@ var save = require('save-file');
 var jsdom = require("jsdom");
 var https = require('https');
 var root_url = "https://cantiques.yapper.fr";
+var home_suffix = "/CV/index.html";
 var dataset = [];
 
+// Trigger the scrapper
+run();
 
-// Fetch HTML nodes in homepage
-fetchContent(root_url + "/CV/index.html")
-	.then((html) => parseHomeContent(html))
+/**
+ * Main function
+ * Fetch HTML nodes in homepage
+ * scrap content from sublinks
+ * build an array and save it as JSON to a file
+ *
+ * @return void
+ */
+ function run(){
+   fetchContent(root_url + home_suffix)
+     .then((html) => parseHomeContent(html))
 
-	// Process sublinks
-	.then(
-		links => {
+     // Process sublinks
+     .then(
+       links => {
 
-			// Build list of Promise to run sequentially
-			var promises = links.reduce((promiseChain, link) => {
-				return promiseChain
-				.then(() => fetchContent(root_url + link))
-				.then(html=> parseDetailContent(html))
-				.then(song => { if (song.content.length > 0) dataset.push(song)})
-				.then(() => new Promise((resolve) => {
-					asyncResolve(resolve, 1000);
-				}));
+         // Build list of Promise to run sequentially
+         var promises = links.reduce((promiseChain, link) => {
+           return promiseChain
+             .then(() => fetchContent(root_url + link))
+             .then(html => parseDetailContent(html))
+             .then(song => {
+               if (song.content.length > 0) dataset.push(song)
+             })
+             .then(() => new Promise((resolve) => {
+               asyncResolve(resolve, 1000);
+             }));
 
 
-			}, Promise.resolve());
+         }, Promise.resolve());
 
-			// Save dataset to file
-			promises.then(
-				data => {
-					// Sort array by ke
-					 sortArrayBy(dataset, 'id')
-					//console.log(dataset)
-					saveData(JSON.stringify(dataset), "./data/data.json")
-				}
-			).then(() => console.log('treated ' + dataset.length + ' items'))
+         // Save dataset to file
+         promises.then(
+           data => {
+             // Sort array by ke
+             sortArrayBy(dataset, 'id')
+             //console.log(dataset)
+             saveData(JSON.stringify(dataset), "./data/data.json")
+           }
+         ).then(() => console.log('treated ' + dataset.length + ' items'))
 
-		}
-	);
+       }
+     );
+
+ }
 
 /**
  * Parse Homepage content
@@ -52,16 +67,18 @@ fetchContent(root_url + "/CV/index.html")
  * @var html, url to fetch as String
  * @return a Promise containing Javascript array (links)
  */
-function parseHomeContent(html){
-	let {JSDOM} = jsdom;
-  let dom = new JSDOM(html);
-  let $ = (require('jquery'))(dom.window);
+function parseHomeContent(html) {
+  var {
+    JSDOM
+  } = jsdom;
+  var dom = new JSDOM(html);
+  var $ = (require('jquery'))(dom.window);
 
-	var items = [];
+  var items = [];
   items = $('ul.hymnlist li a:first-child').each((i) => items.push($(items[i]).attr("href")));
-	items = $.makeArray(items); // converting into Javascript array
-	// items = items.slice(0,5); // reduce items for test
-	return new Promise((resolve, reject) => resolve(items));
+  items = $.makeArray(items); // converting into Javascript array
+  // items = items.slice(0,5); // reduce items for test
+  return new Promise((resolve, reject) => resolve(items));
 }
 
 /**
@@ -71,39 +88,41 @@ function parseHomeContent(html){
  * @return a Promise containing a JsonObject
  */
 
-function parseDetailContent(html){
-	let {JSDOM} = jsdom;
-	let dom = new JSDOM(html);
-	let $ = (require('jquery'))(dom.window);
+function parseDetailContent(html) {
+  var {
+    JSDOM
+  } = jsdom;
+  var dom = new JSDOM(html);
+  var $ = (require('jquery'))(dom.window);
 
-	// Handling text formatting and filtering: regex, trim, etc.
-	var id, title, verses;
-	var content = [];
+  // Handling text formatting and filtering: regex, trim, etc.
+  var id, title, verses;
+  var content = [];
 
-	// Assign variables
-	verses = $('section#content .lyrics .verse');
-	for(var i = 0; i < verses.length; i++){
+  // Assign variables
+  verses = $('section#content .lyrics .verse');
+  for (var i = 0; i < verses.length; i++) {
 
-		// Get verse lines
-		var lines = $(verses[i]).children('.indent0');
+    // Get verse lines
+    var lines = $(verses[i]).children('.indent0');
 
-		var verse = '';
-		for(j= 0; j < lines.length; j++){
-			// Append lines
-			verse = verse + $(lines[j]).text() + "\n";
-		}
+    var verse = '';
+    for (j = 0; j < lines.length; j++) {
+      // Append lines
+      verse = verse + $(lines[j]).text() + "\n";
+    }
 
-		// Add row to array
-		content.push((i+1) + ". " +  verse);
+    // Add row to array
+    content.push((i + 1) + ". " + verse);
   }
 
-	// Build Song object
-	var song = {
-		id : $('section#content h1 strong').text().replace(/\./, '').trim(),
-		title : $('section#content h1').text().replace(/[0-9]{0,4}\./, '').trim(),
-		content : content,
-	}
-	return new Promise((resolve, reject) => resolve(song));
+  // Build Song object
+  var song = {
+    id: $('section#content h1 strong').text().replace(/\./, '').trim(),
+    title: $('section#content h1').text().replace(/[0-9]{0,4}\./, '').trim(),
+    content: content,
+  }
+  return new Promise((resolve, reject) => resolve(song));
 }
 
 /**
@@ -113,29 +132,31 @@ function parseDetailContent(html){
  * @return a Promise containing HTML text
  *
  */
-function fetchContent(url){
+function fetchContent(url) {
 
-	return new Promise((resolve, reject) => {
-		https.get(url, (resp) => {
-		  var data = '';
+  return new Promise((resolve, reject) => {
+    https.get(url, (resp) => { 
+      var data = '';
 
-		  // Data is received bit after bit
-		  resp.on('data', (chunk) => {
-		    data += chunk;
-		  });
+        // Data is received bit after bit
+       
+      resp.on('data', (chunk) => {  
+        data += chunk; 
+      });
 
-		  // Data is ready
-		  resp.on('end', () => {
-				console.log("fetching " + url);
-				resolve(data);
-		  });
+        // Data is ready
+       
+      resp.on('end', () => {
+        console.log("fetching " + url);
+        resolve(data); 
+      });
 
-			resp.on("error", (err) => {
-			  console.log("Error: " + err.message);
-				reject();
-			});
-		});
-	});
+      resp.on("error", (err) => { 
+        console.log("Error: " + err.message);
+        reject();
+      });
+    });
+  });
 }
 
 /**
@@ -146,11 +167,11 @@ function fetchContent(url){
  * @var path, location of file
  * @return void
  */
-function saveData(data, path){
-	save(data, path, (err, data) => {
-	    if (err) throw err;
+function saveData(data, path) {
+  save(data, path, (err, data) => {
+    if (err) throw err;
 
-	})
+  })
 }
 
 /**
@@ -160,10 +181,10 @@ function saveData(data, path){
  * @var key, sorting criteria
  * @return Javascript array
  */
-function sortArrayBy(dataArray, key){
-	return dataArray.sort(function (a, b) {
-			return parseInt(a[key]) - parseInt(b[key]);
-	});
+function sortArrayBy(dataArray, key) {
+  return dataArray.sort(function(a, b) {
+    return parseInt(a[key]) - parseInt(b[key]);
+  });
 
 }
 
@@ -177,8 +198,8 @@ function sortArrayBy(dataArray, key){
  * @return void, resolve the promise
  * @link https://github.com/samuelguebo/wikibot-nodejs/blob/master/edit-image.js#L43-L73
  */
-function asyncResolve (resolve, delay) {
-		setTimeout(() => {
-		resolve();
-		}, delay);
+function asyncResolve(resolve, delay) {
+  setTimeout(() => {
+    resolve();
+  }, delay);
 }
