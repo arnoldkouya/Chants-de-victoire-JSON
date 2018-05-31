@@ -1,4 +1,5 @@
-[
+{
+"chants":[
   {
     "id": "1",
     "title": "Grand Dieu, nous te bénissons",
@@ -1201,3 +1202,4 @@
     ]
   }
 ]
+}
